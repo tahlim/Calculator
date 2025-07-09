@@ -5,9 +5,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  azureSubscription: 'artwork-25june-2025'     # Name of your Azure service connection
-  appName: 'rts-webapp-demo'               # Name of your App Service
-  slotName: 'qa'                        # Deployment slot name
+  azureSubscription: 'artwork-25june-2025'                   # Name of your Azure service connection
+  appName: 'rts-webapp-demo'                                 # Name of your App Service
+  slotName: 'qa'                                             # Deployment slot name
   resourceGroup: 'Real-Time-Sales-Reporting-DEV-RG'           # Azure Resource Group
   artifactName: 'drop'
 
