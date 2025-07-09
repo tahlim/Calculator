@@ -39,13 +39,6 @@ steps:
     resourceGroupName: '$(resourceGroup)'
     slotName: '$(slotName)'
     package: '$(System.DefaultWorkingDirectory)/target/*.jar'
-
-- task: AzureAppServiceSettings@1
-  inputs:
-    azureSubscription: '$(azureSubscription)'
-    appName: '$(appName)'
-    resourceGroupName: '$(resourceGroup)'
-    slotName: '$(slotName)'
     configurationStrings: |
-      startupCommand=java -jar /home/site/wwwroot/your-app.jar
+      startupCommand=java -jar /home/site/wwwroot/*.jar
 
