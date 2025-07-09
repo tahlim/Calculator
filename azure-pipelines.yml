@@ -14,7 +14,7 @@ variables:
 steps:
 
 # Install Maven and build the project
-- task: Maven@3
+- task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean package'
