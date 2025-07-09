@@ -23,6 +23,13 @@ steps:
     jdkVersionOption: '1.11'
     publishJUnitResults: false
 
+# Copy the WAR or JAR file to another location (e.g., to a folder for artifact storage or deployment)
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/target'
+    Contents: '**/*.jar'  # or '**/*.war' depending on your build output
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/target'
+
 # Publish the WAR or JAR as an artifact (optional, good for multi-stage)
 - task: PublishBuildArtifacts@1
   inputs:
