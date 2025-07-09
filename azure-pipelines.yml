@@ -33,9 +33,19 @@ steps:
 - task: AzureWebApp@1
   inputs:
     azureSubscription: '$(azureSubscription)'
-    appType: 'webAppLinux'             # Use 'webApp' if it's Windows-based
+    appType: 'webAppLinux'
     appName: '$(appName)'
     deployToSlotOrASE: true
     resourceGroupName: '$(resourceGroup)'
     slotName: '$(slotName)'
-    package: '$(System.DefaultWorkingDirectory)/target/*.war'  # or .jar
+    package: '$(System.DefaultWorkingDirectory)/target/*.jar'
+
+- task: AzureAppServiceSettings@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(appName)'
+    resourceGroupName: '$(resourceGroup)'
+    slotName: '$(slotName)'
+    configurationStrings: |
+      startupCommand=java -jar /home/site/wwwroot/your-app.jar
+
