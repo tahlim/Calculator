@@ -1,19 +1,41 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureSubscription: 'artwork-25june-2025'     # Name of your Azure service connection
+  appName: 'rts-webapp-demo'               # Name of your App Service
+  slotName: 'qa'                        # Deployment slot name
+  resourceGroup: 'Real-Time-Sales-Reporting-DEV-RG'           # Azure Resource Group
+  artifactName: 'drop'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Install Maven and build the project
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+    options: '-Dmaven.test.skip=true'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    publishJUnitResults: false
+
+# Publish the WAR or JAR as an artifact (optional, good for multi-stage)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(System.DefaultWorkingDirectory)/target'
+    artifactName: '$(artifactName)'
+
+# Deploy to Azure App Service Slot
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appType: 'webAppLinux'             # Use 'webApp' if it's Windows-based
+    appName: '$(appName)'
+    deployToSlotOrASE: true
+    resourceGroupName: '$(resourceGroup)'
+    slotName: '$(slotName)'
+    package: '$(System.DefaultWorkingDirectory)/target/*.war'  # or .jar
